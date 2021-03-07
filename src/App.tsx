@@ -231,7 +231,7 @@ class App extends Template{
         adapterType={'readable'}
         weightedEdges={true}
         namedEdges={true}
-        isDirected={true}
+        //isDirected={true}
     />;
   }
 
@@ -239,11 +239,12 @@ class App extends Template{
     Toolbar.prototype.getButtonList = () => {
       ToolButtonList.prototype.help = () =>
           `В данном задании необходимо определить минимальное расстояние между всеми парами вершин во взвешенном орграфе. 
-          Получивший ответ необходимо записать в матрицу. 
+          Получивший ответ необходимо записать в матрицу. Если путь в орграфе невозможно найти, то очистите матрицу.
           Если Вы запутались, то кнопка "Начать сначала" позволит начать выполнение работы заново с тем же графом. 
           Клик по ребру окрасит его в зеленый цвет, а повторный клик вернет его в черный. 
           Клик по вершине окрасит ее в красный цвет, а повторный клик вернет прежний цвет вершины. 
-          Все это поможет визуально построить путь.`;
+          Все это поможет визуально построить путь.
+          Нажмите на этот текст, чтобы скрыть это окно.`;
       ToolButtonList.prototype.beforeComplete = this.calculate;
       return ToolButtonList;
     }
@@ -258,8 +259,16 @@ class App extends Template{
         for (let j = 0; j < graph.vertices.length; j++) {
             r.push(10000);
           }
-
       matrixOfWeight.push(r);
+    }
+
+    let zeroMatrix = [];
+    for (let h = 0; h < graph.vertices.length; h++ ){
+      let row: number[] = [];
+      for (let j = 0; j < graph.vertices.length; j++) {
+        row.push(0);
+      }
+      zeroMatrix.push(row);
     }
 
     for (let i = 0; i < graph.vertices.length; i++) { //заполнение матрицы всеми весами
@@ -285,12 +294,19 @@ class App extends Template{
     weight = matrixOfWeight;
 
     for (let k = 0; k < graph.vertices.length; k++) {
-      for (let i = 0; i < graph.vertices.length; i++){
-        for (let j = 0; j < graph.vertices.length; j++){
-          if (matrixOfWeight[i][k] < 10000 && matrixOfWeight[k][j] < 10000
-              && (matrixOfWeight[i][k] + matrixOfWeight[k][j] < matrixOfWeight[i][j]))
-          {
-            weight[i][j] = matrixOfWeight[i][k] + matrixOfWeight[k][j];
+      for (let i = 0; i < graph.vertices.length; i++) {
+        for (let j = 0; j < graph.vertices.length; j++) {
+          if (i === j && weight[i][k] + weight[k][j] < 0) { // проверка на отрицательные циклы
+            k = graph.vertices.length - 1;
+            i = graph.vertices.length - 1;
+            j = graph.vertices.length - 1;
+            weight = zeroMatrix;
+          }
+          else if (matrixOfWeight[i][k] < 10000 && matrixOfWeight[k][j] < 10000
+              && (matrixOfWeight[i][k] + matrixOfWeight[k][j] < matrixOfWeight[i][j])) {
+             {
+              weight[i][j] = matrixOfWeight[i][k] + matrixOfWeight[k][j];
+            }
           }
         }
       }
