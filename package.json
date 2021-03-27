@@ -11,7 +11,7 @@
     "@types/react": "^17.0.2",
     "@types/react-dom": "^17.0.1",
     "graphlabs.core.lib": "^0.1.23",
-    "graphlabs.core.template": "^1.0.60",
+    "graphlabs.core.template": "^1.0.61",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.2",

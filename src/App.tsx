@@ -61,10 +61,16 @@ class App extends Template{
             "target": "4",
             "name": "3",
             "isDirected": "true"
+          },
+          {
+            "source": "4",
+            "target": "2",
+            "name": "5",
+            "isDirected": "true"
           }
-        ],
-
-      }
+        ]
+      },
+      "isDirected": "true"
     }
   ]
 
@@ -145,8 +151,8 @@ class App extends Template{
 
   matrix: number[][] = [];
 
-  graph: IGraph< IVertex, IEdge> = this.graphMy(this.data[0].value);
-  //graph: IGraph< IVertex, IEdge> = this.my_graph();
+  //graph: IGraph< IVertex, IEdge> = this.graphMy(this.data[0].value);
+  graph: IGraph< IVertex, IEdge> = this.my_graph();
 
   graphMy(data:any): IGraph<IVertex, IEdge> {
     const graph: IGraph<IVertex, IEdge> = new Graph() as unknown as IGraph<IVertex, IEdge>;
@@ -231,7 +237,7 @@ class App extends Template{
         adapterType={'readable'}
         weightedEdges={true}
         namedEdges={true}
-        //isDirected={true}
+        isDirected={true}
     />;
   }
 
@@ -239,11 +245,12 @@ class App extends Template{
     Toolbar.prototype.getButtonList = () => {
       ToolButtonList.prototype.help = () =>
           `В данном задании необходимо определить минимальное расстояние между всеми парами вершин во взвешенном орграфе. 
-          Получивший ответ необходимо записать в матрицу. Если путь в орграфе невозможно найти, то очистите матрицу.
+          Получивший ответ необходимо записать в матрицу, если через вершину не проходит оптимальный путь, то оставьте ячейку матрицы пустой. 
+          Если путь в орграфе невозможно найти, то очистите матрицу.
           Если Вы запутались, то кнопка "Начать сначала" позволит начать выполнение работы заново с тем же графом. 
           Клик по ребру окрасит его в зеленый цвет, а повторный клик вернет его в черный. 
           Клик по вершине окрасит ее в красный цвет, а повторный клик вернет прежний цвет вершины. 
-          Все это поможет визуально построить путь.
+          Все это поможет визуально построить путь. 
           Нажмите на этот текст, чтобы скрыть это окно.`;
       ToolButtonList.prototype.beforeComplete = this.calculate;
       return ToolButtonList;
